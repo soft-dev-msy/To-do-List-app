@@ -3,65 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productivity Pro - To-Do List</title>
+    <title>Productivity Pro - Ultimate To-Do List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    
-</head>
+<link rel=”stylesheet” href=”style.css”>
+ </head>
 <body>
-    <div class="container">
-        <header>
-            <div>
-                <h1>Productivity Pro</h1>
-                <p>Your ultimate task management solution</p>
-            </div>
-            <button class="theme-toggle" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
+    <!-- Previous HTML remains the same until the filters section -->
+    
+    <div class="sort-filter-container">
+        <div class="sort-controls">
+            <span>Sort by:</span>
+            <button class="sort-btn" data-sort="default">
+                <i class="fas fa-sort"></i> Default
             </button>
-        </header>
-
-        <div class="stats">
-            <div class="stat-card">
-                <h3>Total Tasks</h3>
-                <p id="total-tasks">0</p>
-            </div>
-            <div class="stat-card">
-                <h3>Completed</h3>
-                <p id="completed-tasks">0</p>
-            </div>
-            <div class="stat-card">
-                <h3>Pending</h3>
-                <p id="pending-tasks">0</p>
+            <button class="sort-btn" data-sort="due-date">
+                <i class="fas fa-calendar-alt"></i> Due Date
+            </button>
+            <button class="sort-btn" data-sort="priority">
+                <i class="fas fa-flag"></i> Priority
+            </button>
+        </div>
+        <div class="filter-controls">
+            <span>Filter:</span>
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-list"></i> All
+            </button>
+            <button class="filter-btn" data-filter="active">
+                <i class="fas fa-circle-notch"></i> Active
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                <i class="fas fa-check-circle"></i> Completed
+            </button>
+        </div>
+    </div>
+    
+    <div class="priority-filters">
+        <div class="priority-filter low active" data-priority="low">
+            <i class="fas fa-flag"></i> Low
+        </div>
+        <div class="priority-filter medium active" data-priority="medium">
+            <i class="fas fa-flag"></i> Medium
+        </div>
+        <div class="priority-filter high active" data-priority="high">
+            <i class="fas fa-flag"></i> High
+        </div>
+    </div>
+    
+    <!-- Previous HTML continues... -->
+    
+    <!-- Confirmation Dialog -->
+    <div class="confirmation-dialog" id="confirmation-dialog">
+        <div class="dialog-content">
+            <h3 class="dialog-title" id="dialog-title">Confirm Action</h3>
+            <p class="dialog-message" id="dialog-message">Are you sure you want to perform this action?</p>
+            <div class="dialog-buttons">
+                <button class="dialog-btn cancel" id="dialog-cancel">Cancel</button>
+                <button class="dialog-btn confirm" id="dialog-confirm">Confirm</button>
             </div>
         </div>
-
-        <div class="input-container">
-            <input type="text" id="task-input" placeholder="Add a new task..." autocomplete="off">
-            <input type="date" id="due-date">
-            <select id="priority">
-                <option value="low">Low Priority</option>
-                <option value="medium" selected>Medium Priority</option>
-                <option value="high">High Priority</option>
-            </select>
-            <button id="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
-        </div>
-
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">All Tasks</button>
-            <button class="filter-btn" data-filter="active">Active</button>
-            <button class="filter-btn" data-filter="completed">Completed</button>
-            <button class="clear-btn" id="clear-completed"><i class="fas fa-trash"></i> Clear Completed</button>
-        </div>
-
-        <ul class="task-list" id="task-list">
-            <!-- Tasks will be added here dynamically -->
-            <div class="empty-state" id="empty-state">
-                <i class="fas fa-tasks"></i>
-                <p>No tasks found. Add a task to get started!</p>
-            </div>
-        </ul>
     </div>
 
-    <script src=”script.js></script>
+    <script src=”script.js”></script>
 </body>
 </html>
