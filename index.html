@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productivity Pro - To-Do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>Productivity Pro</h1>
+                <p>Your ultimate task management solution</p>
+            </div>
+            <button class="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Tasks</h3>
+                <p id="total-tasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <p id="completed-tasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Pending</h3>
+                <p id="pending-tasks">0</p>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="task-input" placeholder="Add a new task..." autocomplete="off">
+            <input type="date" id="due-date">
+            <select id="priority">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+            </select>
+            <button id="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Tasks</button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+            <button class="clear-btn" id="clear-completed"><i class="fas fa-trash"></i> Clear Completed</button>
+        </div>
+
+        <ul class="task-list" id="task-list">
+            <!-- Tasks will be added here dynamically -->
+            <div class="empty-state" id="empty-state">
+                <i class="fas fa-tasks"></i>
+                <p>No tasks found. Add a task to get started!</p>
+            </div>
+        </ul>
+    </div>
+
+    <script src=”script.js></script>
+</body>
+</html>
