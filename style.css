@@ -1,0 +1,359 @@
+   /* CSS will go here */
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --background-color: #f5f7fa;
+            --text-color: #333;
+            --light-text: #777;
+            --border-color: #ddd;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --low-priority: #8bc34a;
+            --medium-priority: #ffc107;
+            --high-priority: #ff5722;
+        }
+
+        .dark-theme {
+            --primary-color: #3a5683;
+            --secondary-color: #0d4b6e;
+            --accent-color: #0288d1;
+            --background-color: #2d2d2d;
+            --text-color: #f0f0f0;
+            --light-text: #aaa;
+            --border-color: #444;
+            --success-color: #388e3c;
+            --warning-color: #f57c00;
+            --danger-color: #d32f2f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--background-color);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat-card {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .stat-card p {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .input-container {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .input-container input, 
+        .input-container select {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .input-container button {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .input-container button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .filter-btn:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .clear-btn {
+            padding: 8px 15px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .clear-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            animation: fadeIn 0.3s ease-in;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .task-item.fade-out {
+            animation: fadeOut 0.3s ease-out;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+
+        .task-checkbox {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .task-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task-text {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            color: var(--light-text);
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        .task-priority {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .priority-low {
+            background-color: var(--low-priority);
+        }
+
+        .priority-medium {
+            background-color: var(--medium-priority);
+        }
+
+        .priority-high {
+            background-color: var(--high-priority);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .task-btn {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .task-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .task-btn.delete:hover {
+            color: var(--danger-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--border-color);
+        }
+
+        .empty-state p {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            .task-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .task-checkbox {
+                margin-bottom: 10px;
+            }
+            
+            .task-actions {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+        }
+
+        /* Custom checkbox styling */
+        .custom-checkbox {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .custom-checkbox.checked {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .custom-checkbox.checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+        }
