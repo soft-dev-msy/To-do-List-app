@@ -367,3 +367,231 @@
             // Initialize theme
             checkTheme();
         });
+        // Previous JavaScript remains the same, adding new functionality
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // New DOM elements
+            const sortButtons = document.querySelectorAll('.sort-btn');
+            const priorityFilters = document.querySelectorAll('.priority-filter');
+            const confirmationDialog = document.getElementById('confirmation-dialog');
+            const dialogTitle = document.getElementById('dialog-title');
+            const dialogMessage = document.getElementById('dialog-message');
+            const dialogCancel = document.getElementById('dialog-cancel');
+            const dialogConfirm = document.getElementById('dialog-confirm');
+            
+            // Current sort and filter states
+            let currentSort = 'default';
+            let currentPriorityFilter = ['low', 'medium', 'high'];
+            
+            // Initialize with new features
+            init();
+            
+            function init() {
+                // Previous initialization code
+                setupNewEventListeners();
+            }
+            
+            function setupNewEventListeners() {
+                // Sort buttons
+                sortButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        sortButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        currentSort = this.dataset.sort;
+                        applySortAndFilter();
+                    });
+                });
+                
+                // Priority filters
+                priorityFilters.forEach(filter => {
+                    filter.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                        updatePriorityFilter();
+                        applySortAndFilter();
+                    });
+                });
+                
+                // Confirmation dialog
+                dialogCancel.addEventListener('click', hideConfirmationDialog);
+            }
+            
+            // Apply both sorting and filtering
+            function applySortAndFilter() {
+                const tasks = getTasks();
+                
+                // Filter by status first
+                let filteredTasks = tasks.filter(task => {
+                    if (currentFilter === 'all') {
+                        return currentPriorityFilter.includes(task.priority);
+                    } else if (currentFilter === 'active') {
+                        return !task.completed && currentPriorityFilter.includes(task.priority);
+                    } else {
+                        return task.completed && currentPriorityFilter.includes(task.priority);
+                    }
+                });
+                
+                // Then sort
+                filteredTasks.sort((a, b) => {
+                    if (currentSort === 'due-date') {
+                        // Sort by due date (tasks without date go last)
+                        if (!a.dueDate && !b.dueDate) return 0;
+                        if (!a.dueDate) return 1;
+                        if (!b.dueDate) return -1;
+                        return new Date(a.dueDate) - new Date(b.dueDate);
+                    } else if (currentSort === 'priority') {
+                        // Sort by priority (high > medium > low)
+                        const priorityOrder = { high: 3, medium: 2, low: 1 };
+                        return priorityOrder[b.priority] - priorityOrder[a.priority];
+                    } else {
+                        // Default sort (by creation date, newest first)
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                    }
+                });
+                
+                // Re-render tasks
+                taskList.innerHTML = '';
+                if (filteredTasks.length === 0) {
+                    showEmptyState();
+                } else {
+                    hideEmptyState();
+                    filteredTasks.forEach(task => renderTask(task));
+                }
+            }
+            
+            // Update priority filter based on active chips
+            function updatePriorityFilter() {
+                currentPriorityFilter = [];
+                priorityFilters.forEach(filter => {
+                    if (filter.classList.contains('active')) {
+                        currentPriorityFilter.push(filter.dataset.priority);
+                    }
+                });
+                
+                // If all are inactive, show none
+                if (currentPriorityFilter.length === 0) {
+                    priorityFilters.forEach(filter => filter.classList.add('active'));
+                    currentPriorityFilter = ['low', 'medium', 'high'];
+                }
+            }
+            
+            // Show confirmation dialog
+            function showConfirmationDialog(title, message, confirmCallback) {
+                dialogTitle.textContent = title;
+                dialogMessage.textContent = message;
+                confirmationDialog.classList.add('active');
+                
+                // Store the confirm callback
+                dialogConfirm.onclick = function() {
+                    confirmCallback();
+                    hideConfirmationDialog();
+                };
+            }
+            
+            // Hide confirmation dialog
+            function hideConfirmationDialog() {
+                confirmationDialog.classList.remove('active');
+            }
+            
+            // Modified deleteTask function to use confirmation dialog
+            function deleteTask(taskId) {
+                const taskElement = document.querySelector(.task-item[data-id="${taskId}"]);
+                if (!taskElement) return;
+                
+                showConfirmationDialog(
+                    'Delete Task',
+                    'Are you sure you want to delete this task? This action cannot be undone.',
+                    function() {
+                        // Add fade-out animation
+                        taskElement.classList.add('fade-out');
+                        showNotification('Task deleted!', 'info');
+                        
+                        // Remove from DOM after animation completes
+                        setTimeout(() => {
+                            // Remove from local storage
+                            const tasks = getTasks();
+                            const updatedTasks = tasks.filter(task => task.id != taskId);
+                            
+                            try {
+                                localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+                            } catch (e) {
+                                showNotification('Error deleting task: ' + e.message, 'error');
+                                return;
+                            }
+                            
+                            taskElement.remove();
+                            updateStats();
+                            
+                            // Show empty state if no tasks left
+                            if (updatedTasks.length === 0) {
+                                showEmptyState();
+                            }
+                        }, 300);
+                    }
+                );
+            }
+            
+            // Modified clearCompletedTasks to use confirmation dialog
+            function clearCompletedTasks() {
+                const completedCount = document.querySelectorAll('.task-item[data-status="completed"]').length;
+                if (completedCount === 0) {
+                    showNotification('No completed tasks to clear!', 'info');
+                    return;
+                }
+                
+                showConfirmationDialog(
+                    'Clear Completed Tasks',
+                    Are you sure you want to clear ${completedCount} completed tasks? This action cannot be undone.,
+                    function() {
+                        const tasks = getTasks();
+                        const activeTasks = tasks.filter(task => !task.completed);
+                        
+                        try {
+                            localStorage.setItem('tasks', JSON.stringify(activeTasks));
+                        } catch (e) {
+                            showNotification('Error clearing tasks: ' + e.message, 'error');
+                            return;
+                        }
+                        
+                        // Remove completed tasks from DOM
+                        const completedTasks = document.querySelectorAll('.task-item[data-status="completed"]');
+                        if (completedTasks.length > 0) {
+                            showNotification(Cleared ${completedTasks.length} completed tasks!, 'success');
+                        }
+                        
+                        completedTasks.forEach(task => {
+                            task.classList.add('fade-out');
+                            setTimeout(() => task.remove(), 300);
+                        });
+                        
+                        updateStats();
+                        
+                        // Show empty state if no tasks left
+                        if (activeTasks.length === 0) {
+                            showEmptyState();
+                        }
+                    }
+                );
+            }
+            
+            // Update all existing filter functions to use applySortAndFilter
+            function filterTasks(filter) {
+                currentFilter = filter;
+                applySortAndFilter();
+            }
+            
+            // Update other functions that need to refresh the task list
+            function addTask() {
+                // ... existing addTask code ...
+                applySortAndFilter(); // Instead of filterTasks(currentFilter)
+            }
+            
+            function toggleTaskCompletion(taskId) {
+                // ... existing toggleTaskCompletion code ...
+                applySortAndFilter(); // Instead of filterTasks(currentFilter)
+            }
+            
+            function editTask(taskId) {
+                // ... existing editTask code ...
+                applySortAndFilter(); // Instead of filterTasks(currentFilter)
+            }
+        });
